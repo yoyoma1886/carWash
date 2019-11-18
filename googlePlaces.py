@@ -52,9 +52,6 @@ for place in places_result['results']:
     # store the results in a list object
     stored_results.append(places_details['result'])
 
-# with open('people.xls', 'wb') as f:
-#    f.write(places_details.export('xls'))
-
 # translate to Excel -----------------------------
 
 # define headers, the key of each result dictionary
