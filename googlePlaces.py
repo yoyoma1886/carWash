@@ -1,8 +1,8 @@
 # pip install google maps
 # pip install prettyprint
 
-# still to fix: next page token, address component handling, error when 0 responses,
-# adding results to existing or new tab (not overwriting), API key method,
+# TO FIX: next page token, address component handling (tuple), error when 0 responses,
+# TO ADD: adding results to existing or new tab (not overwriting), API key method, iterative lat/long
 
 import googlemaps
 import pprint
@@ -19,13 +19,23 @@ gmaps = googlemaps.Client(key=API_KEY)
 
 # Location search (nearby) ----------------------------------------
 
-# Using: lat/long, radius, type
-places_result = gmaps.places_nearby(
-    location='40.906620, -74.611021', radius=50000, type='car_wash')
+# NJ coordinates: N: 41.362939 / S: 38.927599, W: -75.558906, E: -73.975784
+
+params = {
+    'location': (40.906620, -74.611021),
+    'radius': 5000,
+    'type': "car_wash"
+}
+
+places_result = gmaps.places_nearby(**params)
 
 time.sleep(2)
 
-place_result = gmaps.places_nearby(page_token=places_result['next_page_token'])
+# pass next page token for add'l 20 results
+# params['page_token'] = places_result['next_page_token']
+
+# run gmaps again with next token
+# place_result = gmaps.places_nearby(**params)
 
 stored_results = []
 
@@ -37,20 +47,21 @@ for place in places_result['results']:
     my_place_id = place['place_id']
 
     # define fields to return, formatted as list
-    my_fields = ['name', 'place_id', 'formatted_address',
-                 'formatted_phone_number']
+    my_fields = ['name', 'place_id']
 
-#    my_fields = ['name', 'place_id', 'permanently_closed', 'formatted_address', 'address_component',
+#   POSSIBLE FIELDS = ['name', 'place_id', 'permanently_closed', 'formatted_address', 'address_component',
     #                'formatted_phone_number', 'geometry', 'type']
 
     # make request for details
     places_details = gmaps.place(place_id=my_place_id, fields=my_fields)
 
     # print results of details, as dictionary
-    pprint.pprint(places_details['result'])
+    # pprint.pprint(places_details['result'])
 
     # store the results in a list object
     stored_results.append(places_details['result'])
+
+    pprint.pprint(stored_results)
 
 # translate to Excel -----------------------------
 

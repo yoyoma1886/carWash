@@ -1,18 +1,12 @@
-# import math
-# from os import rename
-# import sys
+import googlemaps
+import pprint
+import time
+import json
+import xlsxwriter
+import tablib
 
-import requests
+# Define API Key
+API_KEY = "AIzaSyDy1kLx1ELKzyrC2QyIOeUtbNCRK1NZQWc"
 
-# print(sys.version)
-# print(sys.executable)
-
-
-# def greet(who_to_greet):
-#     greeting = 'Hello, {}'.format(who_to_greet)
-#     return greeting
-
-
-r = requests.get('https://coreyms.com')
-print(r.status_code)
-print(r.ok)
+# define client
+gmaps = googlemaps.Client(key=API_KEY)
