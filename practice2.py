@@ -28,9 +28,6 @@ yTurns = -numpy.divide(yMax-yMin, 2)
 
 store = []
 
-my_place_id = place['place_id']
-my_fields = ['name', 'place_id']
-
 for x in numpy.arange(xMax, xMin, xTurns):
     for y in numpy.arange(yMax, yMin, yTurns):
 
