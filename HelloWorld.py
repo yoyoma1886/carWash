@@ -4,9 +4,15 @@ import time
 import json
 import xlsxwriter
 import tablib
+import numpy
+# from pandas.io.json import json_normalize
+import pandas as pd
+import collections
 
-# Define API Key
-API_KEY = "AIzaSyDy1kLx1ELKzyrC2QyIOeUtbNCRK1NZQWc"
+sales = [('Jones', 150, 200, 50),
+         ('Alpha', 200, 210, 90)]
 
-# define client
-gmaps = googlemaps.Client(key=API_KEY)
+labels = ['account', 'jan', 'feb', 'mar']
+
+df = pd.DataFrame(sales)
+print(df)

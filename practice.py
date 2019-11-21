@@ -5,7 +5,9 @@ import json
 import xlsxwriter
 import tablib
 import numpy
+import pandas as pd
 from pandas.io.json import json_normalize
+import collections
 
 # Define API Key
 API_KEY = "AIzaSyDy1kLx1ELKzyrC2QyIOeUtbNCRK1NZQWc"
@@ -29,6 +31,8 @@ yTurns = -numpy.divide(yMax-yMin, 2)
 
 stored_results = []
 
+field_details = ['name', 'place_id', 'permanently_closed', 'adr_address', 'geometry/location', 'url',
+                 'vicinity', 'formatted_address', 'address_component', 'formatted_phone_number', 'type']
 
 for x in numpy.arange(xMax, xMin, xTurns):
     for y in numpy.arange(yMax, yMin, yTurns):
@@ -44,8 +48,7 @@ for x in numpy.arange(xMax, xMin, xTurns):
 
             for place in places_result['results']:
                 my_place_id = place['place_id']
-                my_fields = ['name', 'place_id', 'permanently_closed', 'formatted_address', 'address_component',
-                             'formatted_phone_number', 'geometry', 'type']
+                my_fields = field_details
                 places_details = gmaps.place(
                     place_id=my_place_id, fields=my_fields)
                 stored_results.append(places_details['result'])
@@ -62,8 +65,7 @@ for x in numpy.arange(xMax, xMin, xTurns):
 
             for place in places_result['results']:
                 my_place_id = place['place_id']
-                my_fields = ['name', 'place_id', 'permanently_closed', 'formatted_address', 'address_component',
-                             'formatted_phone_number', 'geometry', 'type']
+                my_fields = field_details
                 places_details = gmaps.place(
                     place_id=my_place_id, fields=my_fields)
                 stored_results.append(places_details['result'])
@@ -79,19 +81,42 @@ for x in numpy.arange(xMax, xMin, xTurns):
 
             for place in places_result['results']:
                 my_place_id = place['place_id']
-                my_fields = ['name', 'place_id', 'permanently_closed', 'formatted_address', 'address_component',
-                             'formatted_phone_number', 'geometry', 'type']
+                my_fields = field_details
                 places_details = gmaps.place(
                     place_id=my_place_id, fields=my_fields)
                 stored_results.append(places_details['result'])
         except:
             print("Nope")
 
-print(len(stored_results))
-pprint.pprint(stored_results)
+df = json_normalize(stored_results, max_level=None)
+print(df)
 
-# df = pd.DataFrame.from_dict(json_normalize(stored_results), orient='colums')
+
+df.to_excel(r'C:\Users\rymur\Desktop\data.xlsx')
+
+
+# df = pd.DataFrame.from_dict(json_normalize(stored_results), )
+# print(df, sep='\n')
+
+# print(json_normalize(stored_results))
+
+# print(len(stored_results))
+
+# def flatten(stored_results):
+#     if isinstance(stored_results, collections.Iterable):
+#         return [a for i in stored_results for a in flatten(i)]
+#     else:
+#         return [stored_results]
+
+# flatten()
+
+
+# pprint.pprint(stored_results)
+# df = pd.DataFrame(stored_results), orient='columns')
 # df
+# print json_normalize(stored_results)
+# print json_normalize (df)
+
 
 # translate to Excel -----------------------------
 
